@@ -1,0 +1,4 @@
+.git
+.gitignore
+npm-debug.log
+tmp/*.mp4
