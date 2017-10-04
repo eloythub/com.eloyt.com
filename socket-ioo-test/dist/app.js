@@ -3442,8 +3442,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_socket_io_client___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_socket_io_client__);
 
 
-const $input = $('#input')
-const $send = $('#send')
+const $input  = $('#input')
+const $send   = $('#send')
 const $result = $('#result')
 
 let resultIndex = 0
@@ -3462,8 +3462,18 @@ const debug = (...args) => {
   $result.append('<br /><br />')
 }
 
+//const socket = io('https://staging-com.eloyt.com', {
+//  transports: ['websocket'],
+//  extraHeaders: {
+//    Authorization: "bearer "
+//  }
+//})
+
 const socket = __WEBPACK_IMPORTED_MODULE_0_socket_io_client___default()('http://dev.com.eloyt.com', {
-  transports: ['websocket']
+  transports: ['websocket'],
+  extraHeaders: {
+    Authorization: "bearer "
+  }
 })
 
 debug('init')
@@ -3477,7 +3487,7 @@ socket.on('connect', () => {
 socket.on('auth-ping', (data) => {
   debug('com service asked to introduce myself')
 
-  socket.emit('auth-pong', {device_type: 'ios'})
+  socket.emit('auth-pong', {authorizationToken: 'cdb1c20f-f1d0-408c-aa5e-74f4ed4b03e8', device_type: 'ios'})
 })
 
 // when server has correct information and allow us to go ahead and communicate

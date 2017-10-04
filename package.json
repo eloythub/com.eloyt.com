@@ -6,6 +6,7 @@
   "scripts": {
     "start": "DEBUG=ELOYT-ZONE:* NODE_ENV=dev ./node_modules/babel-cli/bin/babel-node.js ./App.js",
     "ngrok": "./ngrok http 8090 --region=ap --hostname=ngrok.api.eloyt.com",
+    "worker": "DEBUG=ELOYT-ZONE:* NODE_ENV=dev ./node_modules/babel-cli/bin/babel-node.js ./Worker.js",
     "test": "npm run standard -s && npm run mocha-integrations -s",
     "mocha-integrations": "NODE_ENV=test mocha ./Tests/Integrations/**/*.spec.js --reporter dot --compilers js:babel-core/register --recursive",
     "mocha-integrations-verbose": "DEBUG=ELOYT-ZONE:* NODE_ENV=test mocha ./Tests/Integrations/**/*.spec.js --compilers js:babel-core/register --recursive",
@@ -29,6 +30,7 @@
   },
   "homepage": "https://github.com/eloythub/api.eloyt.com#readme",
   "dependencies": {
+    "amqplib": "^0.5.1",
     "azure": "^2.0.0-preview",
     "babel": "^6.5.2",
     "babel-cli": "^6.24.1",

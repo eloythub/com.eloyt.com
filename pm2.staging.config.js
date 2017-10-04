@@ -13,6 +13,20 @@ module.exports = {
         DEBUG: 'ELOYT-ZONE:*',
         NODE_ENV: "staging"
       }
+    },
+    {
+      name: "worker",
+      interpreter: "./node_modules/babel-cli/bin/babel-node.js",
+      script: "Worker.js",
+      watch: false,
+      env: {
+        DEBUG: 'ELOYT-ZONE:*',
+        NODE_ENV: "staging"
+      },
+      env_: {
+        DEBUG: 'ELOYT-ZONE:*',
+        NODE_ENV: "staging"
+      }
     }
   ]
 }

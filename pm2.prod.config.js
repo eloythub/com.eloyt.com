@@ -11,6 +11,18 @@ module.exports = {
       env_: {
         NODE_ENV: "prod"
       }
+    },
+    {
+      name: "worker",
+      interpreter: "./node_modules/babel-cli/bin/babel-node.js",
+      script: "Worker.js",
+      watch: false,
+      env: {
+        NODE_ENV: "prod"
+      },
+      env_: {
+        NODE_ENV: "prod"
+      }
     }
   ]
 }

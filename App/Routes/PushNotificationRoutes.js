@@ -14,7 +14,6 @@ export default class MessagesRoutes {
         handler: (req, res) => PushNotificationController.registerNewDevice(req, res),
         validate: {
           payload: {
-            userId: Joi.string().required(),
             token: Joi.string().required(),
             deviceType: Joi.string().allow([
               DeviceTypesEnum.apple,

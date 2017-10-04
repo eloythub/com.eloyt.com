@@ -1,6 +1,6 @@
 'use strict'
 
-
+import SocketService from '../Services/SocketService'
 
 export default class Sockets {
   constructor (io, socket) {
@@ -16,8 +16,11 @@ export default class Sockets {
     socket.on('disconnect', this.disconnect.bind(this))
   }
 
-  newConnection () {
+  async newConnection () {
     console.log('received a new Connection: ', this.socket.id)
+
+    // register new socket into DB
+    const socket = await SocketService.newSocketRegisteration(this.socket.id)
 
     // ask device to introduce itself
     this.socket.emit('auth-ping')
@@ -29,7 +32,9 @@ export default class Sockets {
     this.socket.emit('auth-green-light')
   }
 
-  disconnect () {
+  async disconnect () {
     console.log('socket lost', this.socket.id)
+    // remove registered socket
+    const socket = await SocketService.removeRegisteredSocket(this.socket.id)
   }
 }

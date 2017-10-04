@@ -4,6 +4,7 @@ import debug from 'debug'
 import configs from '../../Configs'
 import PushNotificationService from '../Services/PushNotificationService'
 import UsersService from '../Services/UsersService'
+import RabbitMQService from '../Services/RabbitMQService'
 
 export default class MessagesController {
   static async sendMessage (req, res) {
@@ -11,23 +12,16 @@ export default class MessagesController {
 
     const {senderUserId, receiverUserId, messageObject} = req.payload
 
-
     try {
       const senderUser = await UsersService.findUser(senderUserId)
 
-      const pushSummary = await PushNotificationService.dispatchPushNotification(receiverUserId, {
-        alert: {
-          title: `ʕ·͡ᴥ·ʔ NEW MESSAGE`,
-          body: `${senderUser.firstName} sent you a new message !!!`,
-          //'launch-image': senderUser.cloudAvatarUrl
-        }
+      RabbitMQService.publish('SEND_PUSH_NOTIFICATION_ROUTE', {
+        receiverUserId,
+        senderFirstName: senderUser.firstName
       })
 
-      console.log(pushSummary)
-
       res({
-        statusCode: 200,
-        data: pushSummary
+        statusCode: 200
       }).code(200)
     } catch (e) {
       error(e.message)

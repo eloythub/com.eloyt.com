@@ -8,15 +8,17 @@ export default class PushNotificationController {
   static async registerNewDevice (req, res) {
     const error = debug(`${configs.debugZone}:MessagesController:sendMessage`)
 
-    const {userId, token, deviceType} = req.payload
+
+    const {user} = req.auth.credentials
+    const {token, deviceType} = req.payload
 
     try {
-      const isTokenExists = await PushNotificationService.isTokenExists(userId, deviceType, token)
+      const isTokenExists = await PushNotificationService.isTokenExists(user.id, deviceType, token)
       if (isTokenExists) {
         return res({}).code(201)
       }
 
-      await PushNotificationService.registerNewToken(userId, deviceType, token)
+      await PushNotificationService.registerNewToken(user.id, deviceType, token)
 
       res({}).code(201)
     } catch (e) {

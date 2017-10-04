@@ -17,7 +17,7 @@ export default class Router {
   }
 
   getRoutes() {
-    const log = debug(`${configs.debugZone}:Router:addRoute`);
+    const log = debug(`${configs.debugZone}:Router:getRoutes`);
 
     log('initiated routes retrieved')
 

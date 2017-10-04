@@ -1,4 +1,4 @@
-FROM node:8.1
+FROM node:8.6
 MAINTAINER Mahan Hazrati<eng.mahan.hazrati@gmail.com>
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Bangkok /etc/localtime
@@ -6,45 +6,8 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Bangkok /etc/localtime
 RUN apt-get update && apt-get -y upgrade
 
 RUN apt-get -y install  build-essential \
-                        libmysqlclient-dev \
-                        libssl-dev \
                         git \
-                        curl \
-                        libmp3lame-dev \
-                        libvorbis-dev \
-                        libtheora-dev \
-                        libspeex-dev \
-                        yasm \
-                        pkg-config \
-                        libopenjpeg-dev \
-                        libx264-dev
-
-RUN mkdir software && \
-    cd software && \
-    wget http://ffmpeg.org/releases/ffmpeg-3.2.2.tar.bz2 && \
-    cd .. && \
-    mkdir src && \
-    cd src && \
-    tar xvjf ../software/ffmpeg-3.2.2.tar.bz2 && \
-    cd ffmpeg-3.2.2 && \
-
-    ./configure \
-        --enable-gpl \
-        --enable-postproc \
-        --enable-swscale  \
-        --enable-avfilter  \
-        --enable-libmp3lame  \
-        --enable-libvorbis  \
-        --enable-libtheora  \
-        --enable-libx264  \
-        --enable-libspeex  \
-        --enable-shared  \
-        --enable-pthreads  \
-        --enable-libopenjpeg \
-        --enable-nonfree && \
-    make && \
-    make install && \
-    /sbin/ldconfig
+                        curl
 
 RUN apt-get remove npm
 RUN apt-get update
