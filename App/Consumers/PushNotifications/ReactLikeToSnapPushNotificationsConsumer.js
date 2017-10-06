@@ -3,7 +3,7 @@ import configs from '../../../Configs'
 import Consumer from '../../Consumer'
 import PushNotificationService from '../../Services/PushNotificationService'
 
-const log = debug(`${configs.debugZone}:SendPushNotificationConsumer`)
+const log = debug(`${configs.debugZone}:ReactLikeToSnapPushNotificationsConsumer`)
 
 export default class ReactLikeToSnapPushNotificationsConsumer extends Consumer{
   static enable = true
