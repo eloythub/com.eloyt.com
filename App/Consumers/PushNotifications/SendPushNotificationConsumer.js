@@ -9,7 +9,7 @@ export default class SendPushNotificationConsumer extends Consumer{
   static enable = true
 
   // Name of the queue in rabbitMQ
-  static queueName = 'COM_QUEUE'
+  static queueName = 'SEND_PUSH_NOTIFICATION_QUEUE'
 
   // Name of the route in rabbitMQ
   static routeName = 'SEND_PUSH_NOTIFICATION_ROUTE'

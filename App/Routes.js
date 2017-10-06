@@ -6,7 +6,7 @@ import PushNotificationRoutes from './Routes/PushNotificationRoutes'
 import StreamRoutes from './Routes/StreamRoutes'
 
 export default class Routes {
-  constructor (router) {
+  constructor (router, io) {
     this.router = router
 
     HealthCheckRoutes.setRoutes(this.router)

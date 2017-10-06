@@ -5,8 +5,26 @@ import configs from '../../Configs'
 import * as Models from '../Models'
 
 export default class SocketRepository {
+  static async updateSocketUserId (socketId, userId) {
+    const log = debug(`${configs.debugZone}:SocketRepository`)
+
+    log('updateSocketUserId')
+
+    let user = await Models.Sockets.update({
+      userId
+    }, {
+      where: { socketId }
+    })
+
+    if (!user) {
+      return null
+    }
+
+    return user[0] > 0
+  }
+
   static async newSocketRegisteration (socketId) {
-    const log = debug(`${configs.debugZone}:SocketRepository:newSocketRegisteration`)
+    const log = debug(`${configs.debugZone}:SocketRepository`)
 
     log('newSocketRegisteration')
 
@@ -24,7 +42,7 @@ export default class SocketRepository {
   }
 
   static async removeRegisteredSocket (socketId) {
-    const log = debug(`${configs.debugZone}:SocketRepository:removeRegisteredSocket`)
+    const log = debug(`${configs.debugZone}:SocketRepository`)
 
     log('removeRegisteredSocket')
 

@@ -44,6 +44,7 @@
     "debug": "^2.6.8",
     "dotenv": "^4.0.0",
     "hapi": "^16.0.1",
+    "hapi-io": "^0.2.1",
     "node-json-transform": "^1.0.13",
     "pg": "^6.4.0",
     "pg-hstore": "^2.3.2",

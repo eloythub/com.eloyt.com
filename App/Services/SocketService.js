@@ -24,4 +24,14 @@ export default class SocketService {
 
     return socket
   }
+
+  static async updateSocketUserId (socketId, userId) {
+    const log = debug(`${configs.debugZone}:SocketService`)
+
+    log('updateSocketUserId')
+
+    let socket = await SocketRepository.updateSocketUserId(socketId, userId)
+
+    return socket
+  }
 };

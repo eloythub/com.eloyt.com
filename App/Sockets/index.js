@@ -1,6 +1,7 @@
 'use strict'
 
 import SocketService from '../Services/SocketService'
+import AuthRepository from '../Repositories/AuthRepository'
 
 export default class Sockets {
   constructor (io, socket) {
@@ -26,10 +27,20 @@ export default class Sockets {
     this.socket.emit('auth-ping')
   }
 
-  authPong (data) {
+  async authPong (data) {
     console.log('socket introduce itself by following data : ', data)
 
-    this.socket.emit('auth-green-light')
+    const {authorizationToken} = data
+
+    const auth = await AuthRepository.fetchAuthTokenById(authorizationToken)
+
+    const updatedSocket = await SocketService.updateSocketUserId(this.socket.id, auth.userId)
+
+    if (updatedSocket) {
+      return this.socket.emit('auth-green-light')
+    }
+
+    this.socket.emit('auth-red-light')
   }
 
   async disconnect () {
@@ -38,3 +49,4 @@ export default class Sockets {
     const socket = await SocketService.removeRegisteredSocket(this.socket.id)
   }
 }
+
