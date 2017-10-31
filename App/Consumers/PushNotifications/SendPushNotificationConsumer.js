@@ -23,12 +23,16 @@ export default class SendPushNotificationConsumer extends Consumer{
   static async handle (data) {
     log('handle')
 
-    const {receiverUserId, senderFirstName} = data
+    const {receiverUserId, senderFirstName, messageObject} = data
+
+    const {message} = messageObject
 
     const pushSummary = await PushNotificationService.dispatchPushNotification(receiverUserId, {
-      alert: {
-        title: `ʕ·͡ᴥ·ʔ NEW MESSAGE`,
-        body: `${senderFirstName} sent you a new message`
+      heading: `ʕ·͡ᴥ·ʔ NEW MESSAGE`,
+      content: `${senderFirstName}: ${message}`,
+      data: {
+        messageId: 'NEW_MESSAGE',
+        messageObject
       }
     })
 

@@ -4,10 +4,32 @@ import debug from 'debug'
 import configs from '../../Configs'
 import * as Models from '../Models'
 
-export default class SocketRepository {
-  static async updateSocketUserId (socketId, userId) {
-    const log = debug(`${configs.debugZone}:SocketRepository`)
+const log = debug(`${configs.debugZone}:SocketRepository`)
 
+export default class SocketRepository {
+  static async fetchUsersSocketId (userId) {
+    log('fetchUsersSocketId')
+
+    let socketIds = await Models.Sockets.findAll({
+      attributes: ['socketId'],
+    }, {
+      where: { userId }
+    })
+
+    if (!socketIds) {
+      return null
+    }
+
+    let socketIdsList = []
+
+    for (const socketId of socketIds) {
+      socketIdsList.push(socketId.dataValues)
+    }
+
+    return socketIdsList
+  }
+
+  static async updateSocketUserId (socketId, userId) {
     log('updateSocketUserId')
 
     let user = await Models.Sockets.update({
@@ -24,8 +46,6 @@ export default class SocketRepository {
   }
 
   static async newSocketRegisteration (socketId) {
-    const log = debug(`${configs.debugZone}:SocketRepository`)
-
     log('newSocketRegisteration')
 
     let socket = await Models.Sockets.create({
@@ -42,8 +62,6 @@ export default class SocketRepository {
   }
 
   static async removeRegisteredSocket (socketId) {
-    const log = debug(`${configs.debugZone}:SocketRepository`)
-
     log('removeRegisteredSocket')
 
     const socket = await Models.Sockets.destroy({where: {socketId}})

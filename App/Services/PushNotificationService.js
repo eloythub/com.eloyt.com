@@ -1,15 +1,10 @@
 'use strict'
 
 import debug from 'debug'
+import https from 'https'
 import configs from '../../Configs'
 import DeviceTypesEnum from '../Enums/DeviceTypesEnum'
 import PushNotificationRepository from '../Repositories/PushNotificationRepository'
-import azure from 'azure'
-
-const azureNotificationHubService = azure.createNotificationHubService(
-  configs.azurePushNotificationHubName,
-  configs.azurePushNotificationAccessSignature
-);
 
 export default class PushNotificationService {
   static async registerNewToken (userId, deviceType, token) {
@@ -53,7 +48,7 @@ export default class PushNotificationService {
       switch (pushRecipient.deviceType) {
         case DeviceTypesEnum.apple:
           try {
-            await PushNotificationService.dispatchAzureApplePushNotification(pushRecipients.token, payload)
+            await PushNotificationService.dispatchOneSignalApplePushNotification(pushRecipient.token, payload)
 
             summery.success++
           } catch (err) {
@@ -70,15 +65,63 @@ export default class PushNotificationService {
     return summery
   }
 
-  static dispatchAzureApplePushNotification(token, payload) {
+  static dispatchOneSignalApplePushNotification(token, {heading, content, subtitle, data}) {
     return new Promise((resolve, reject) => {
-      azureNotificationHubService.apns.send(token, payload, function(err){
-        if(!err) {
-          return resolve()
-        }
+      const headers = {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': `Basic ${configs.oneSignalApiKey}`
+      }
 
-        reject()
-      });
+      const options = {
+        host: 'onesignal.com',
+        port: 443,
+        path: '/api/v1/notifications',
+        method: 'POST',
+        headers
+      }
+
+      // visit for more info: https://documentation.onesignal.com/reference#section-example-code-create-notification
+      let message = {
+        app_id: configs.oneSignalAppKey,
+        include_player_ids: [token],
+      }
+
+      if (data) {
+        message = Object.assign({
+          data
+        }, message)
+      }
+
+      if (heading) {
+        message = Object.assign({
+          headings: {'en': heading}
+        }, message)
+      }
+
+      if (subtitle) {
+        message = Object.assign({
+          subtitle: {'en': subtitle}
+        }, message)
+      }
+
+      if (content) {
+        message = Object.assign({
+          contents: {'en': content}
+        }, message)
+      }
+
+      const req = https.request(options, (data) => {
+        try {
+          resolve(JSON.parse(data))
+        } catch (err) {
+          resolve(data)
+        }
+      })
+
+      req.on('error', reject)
+
+      req.write(JSON.stringify(message))
+      req.end()
     })
   }
 };

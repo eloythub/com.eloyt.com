@@ -42,6 +42,18 @@ export default class SocketWrapper {
   }
 
   /**
+   * get connected sockets object
+   *
+   * @param namespace
+   * @returns {null} | Socket
+   */
+  getConnectedSockets (...args) {
+    const [namespace = this.getNamespace()] = args
+
+    return namespace.connected
+  }
+
+  /**
    * get connected socket object
    *
    * @param socketIo

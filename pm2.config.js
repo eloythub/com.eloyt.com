@@ -18,11 +18,11 @@ module.exports = {
         usePolling: true
       },
       env: {
-        DEBUG: "ELOYT-ZONE:*",
+        DEBUG: "ELOYT-ZONE:*,socket.io-emitter:*",
         NODE_ENV: "dev"
       },
       env_: {
-        DEBUG: "ELOYT-ZONE:*",
+        DEBUG: "ELOYT-ZONE:*,socket.io-emitter:*",
         NODE_ENV: "dev"
       }
     },

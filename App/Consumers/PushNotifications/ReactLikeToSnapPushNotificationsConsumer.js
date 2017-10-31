@@ -26,9 +26,13 @@ export default class ReactLikeToSnapPushNotificationsConsumer extends Consumer{
     const {receiverUserId, senderFirstName, resourceId} = data
 
     const pushSummary = await PushNotificationService.dispatchPushNotification(receiverUserId, {
-      alert: {
-        title: `ˁ(⦿ᴥ⦿)ˀ`,
-        body: `${senderFirstName} liked your snap`
+      heading: `ˁ(⦿ᴥ⦿)ˀ`,
+      content: `${senderFirstName} liked your snap`,
+      data: {
+        messageId: 'REACT_LIKE_TO_SNAP',
+        receiverUserId,
+        senderFirstName,
+        resourceId
       }
     })
 

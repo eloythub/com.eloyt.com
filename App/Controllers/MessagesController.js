@@ -12,16 +12,19 @@ export default class MessagesController {
 
     const {senderUserId, receiverUserId, messageObject} = req.payload
 
-    const socketWrapper = new SocketWrapper
-
-    console.log(socketWrapper.getSocket('test'))
-
     try {
       const senderUser = await UsersService.findUser(senderUserId)
 
       RabbitMQService.publish('SEND_PUSH_NOTIFICATION_ROUTE', {
         receiverUserId,
-        senderFirstName: senderUser.firstName
+        senderFirstName: senderUser.firstName,
+        messageObject
+      })
+
+      RabbitMQService.publish('NEW_MESSAGE_SOCKET_ROUTE', {
+        receiverUserId,
+        senderFirstName: senderUser.firstName,
+        messageObject
       })
 
       res({

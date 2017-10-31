@@ -2,7 +2,6 @@
 
 import debug from 'debug'
 import configs from '../../Configs'
-import PushNotificationService from '../Services/PushNotificationService'
 import UsersService from '../Services/UsersService'
 import RabbitMQService from '../Services/RabbitMQService'
 
@@ -19,6 +18,11 @@ export default class StreamController {
         receiverUserId,
         senderFirstName: senderUser.firstName,
         resourceId
+      })
+
+      // send message to sockets to update their recipients list
+      RabbitMQService.publish('UPDATE_RECIPIENTS_LIST_SOCKET_ROUTE', {
+        receiverUserId
       })
 
       res({

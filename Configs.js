@@ -25,13 +25,13 @@ export default {
   },
   redisHost: env['REDIS_HOST'],
   redisPort: env['REDIS_PORT'] || 6379 ,
-  azurePushNotificationHubName: env['AZURE_PUSH_NOTIFICATION_HUB_NAME'],
-  azurePushNotificationAccessSignature: env['AZURE_PUSH_NOTIFICATION_ACCESS_SIGNATURE'],
   rabbitMQ: {
     host: env['RABBITMQ_HOST'],
     username: env['RABBITMQ_USERNAME'],
     password: env['RABBITMQ_PASSWORD'],
     port: env['RABBITMQ_PORT'] || 5672,
     exchangeName: env['RABBITMQ_EXCHANGE_NAME'] || 'exchange.eloyt'
-  }
+  },
+  oneSignalApiKey: env['ONE_SIGNAL_API_KEY'],
+  oneSignalAppKey: env['ONE_SIGNAL_APP_KEY']
 };

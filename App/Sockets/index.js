@@ -30,9 +30,9 @@ export default class Sockets {
   async authPong (data) {
     console.log('socket introduce itself by following data : ', data)
 
-    const {authorizationToken} = data
+    const {authToken} = data
 
-    const auth = await AuthRepository.fetchAuthTokenById(authorizationToken)
+    const auth = await AuthRepository.fetchAuthTokenById(authToken)
 
     const updatedSocket = await SocketService.updateSocketUserId(this.socket.id, auth.userId)
 

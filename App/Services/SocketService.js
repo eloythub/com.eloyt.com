@@ -3,11 +3,12 @@
 import debug from 'debug'
 import configs from '../../Configs'
 import SocketRepository from '../Repositories/SocketRepository'
+import SocketEmitterWrapper from '../Sockets/SocketEmitterWrapper'
+
+const log = debug(`${configs.debugZone}:SocketService`)
 
 export default class SocketService {
   static async newSocketRegisteration (socketId) {
-    const log = debug(`${configs.debugZone}:SocketService:newSocketRegisteration`)
-
     log('newSocketRegisteration')
 
     let socket = await SocketRepository.newSocketRegisteration(socketId)
@@ -16,8 +17,6 @@ export default class SocketService {
   }
 
   static async removeRegisteredSocket (socketId) {
-    const log = debug(`${configs.debugZone}:SocketService:removeRegisteredSocket`)
-
     log('removeRegisteredSocket')
 
     let socket = await SocketRepository.removeRegisteredSocket(socketId)
@@ -26,12 +25,26 @@ export default class SocketService {
   }
 
   static async updateSocketUserId (socketId, userId) {
-    const log = debug(`${configs.debugZone}:SocketService`)
-
     log('updateSocketUserId')
 
     let socket = await SocketRepository.updateSocketUserId(socketId, userId)
 
     return socket
+  }
+
+  static async emitSocket (userId, event, payload = {}) {
+    log('emitSocket')
+
+    const socketEmitterWrapper = new SocketEmitterWrapper
+
+    const socketIdsList = await SocketRepository.fetchUsersSocketId(userId)
+
+    for (const socket of socketIdsList) {
+      try {
+        await socketEmitterWrapper.emit(socket.socketId, event, payload)
+
+      } catch (err) {
+      }
+    }
   }
 };

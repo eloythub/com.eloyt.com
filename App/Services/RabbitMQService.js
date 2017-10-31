@@ -9,14 +9,22 @@ const log = debug(`${configs.debugZone}:RabbitMQService`)
 export default class RabbitMQService {
   static channel
 
-  static async publish (route, data) {
+  static async publish (routes, data) {
     log('publish')
 
     const {exchangeName} = configs.rabbitMQ
 
     const channel = await this.getConnection()
 
-    channel.publish(exchangeName, route, new Buffer(JSON.stringify(data)))
+    if (typeof routes === 'string') {
+      routes = [routes]
+    }
+
+    if (typeof routes === 'object') {
+      for (const route of routes) {
+        channel.publish(exchangeName, route, new Buffer(JSON.stringify(data)))
+      }
+    }
   }
 
   static async getConnection () {

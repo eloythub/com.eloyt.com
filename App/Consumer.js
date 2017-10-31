@@ -1,17 +1,19 @@
-import amqp from 'amqplib/callback_api';
-import path from 'path';
-import fs from 'fs';
-import debug from 'debug';
-import configs from '../Configs';
+import path from 'path'
+import fs from 'fs'
+import debug from 'debug'
+import configs from '../Configs'
+import socketIOEmitter from 'socket.io-emitter'
 import RabbitMQService from '../App/Services/RabbitMQService';
 
-const log = debug(`${configs.debugZone}:Consumer`);
+const log = debug(`${configs.debugZone}:Consumer`)
 
 export default class Consumer {
   static async launch () {
     log('launch')
 
-    const {username, password, host, port, exchangeName} = configs.rabbitMQ
+    const {redisHost, redisPort} = configs
+
+    global.ioEmitter = socketIOEmitter({ host: redisHost, port: redisPort })
 
     const channel = await RabbitMQService.getConnection()
 
@@ -60,6 +62,6 @@ export default class Consumer {
   static readDir (dir, cb) {
     fs.lstatSync(dir).isDirectory()
       ? fs.readdirSync(dir).map(innerDir => this.readDir(path.join(dir, innerDir), cb))
-      : cb(dir);
+      : cb(dir)
   }
 }

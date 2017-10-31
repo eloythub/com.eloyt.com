@@ -3495,6 +3495,11 @@ socket.on('auth-green-light', (data) => {
   debug('got green light from server to start working :D')
 })
 
+// when user liked an snap and user added into recipients list, app must update it's recipients list
+socket.on('recipients-update', (data) => {
+  debug('request from server to update recipients list')
+})
+
 // when device loses connection
 socket.on('disconnect', () => {
   debug('oops, i lost connection')
